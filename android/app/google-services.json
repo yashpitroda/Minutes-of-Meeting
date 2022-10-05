@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "950441569954",
+    "project_id": "minute-of-meeting-fdabc",
+    "storage_bucket": "minute-of-meeting-fdabc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950441569954:android:3a16c102c36b749b4bb1fb",
+        "android_client_info": {
+          "package_name": "com.example.minuteofmeeting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "950441569954-ehs82601eesi56vconq1gkdo6i4gmuou.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm_N3MV703aBEqSi42Xd59uzCjew-GTzY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "950441569954-ehs82601eesi56vconq1gkdo6i4gmuou.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
