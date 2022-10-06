@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -30,18 +31,25 @@ class _AuthScreenState extends State<AuthScreen> {
     String password,
   ) async {
     // print("abc");
-    final response = await http.post(Uri.parse(urlGetter.signupUrl),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          'useridbyfirebase': userIdByFirebase,
-          'emailid': email,
-          'mobileno': mobileno,
-          'username': username,
-          'role': role,
-          'password': password
-        }));
+    // final response = await http.post(Uri.parse(urlGetter.signupUrl),
+    //     headers: {"Content-Type": "application/json"},
+    //     body: jsonEncode({
+    // 'useridbyfirebase': userIdByFirebase,
+    // 'emailid': email,
+    // 'mobileno': mobileno,
+    // 'username': username,
+    // 'role': role,
+    // 'password': password
+    //     }));
+    FirebaseFirestore.instance.collection('users').doc(userIdByFirebase).set({
+      'useridbyfirebase': userIdByFirebase,
+      'emailid': email,
+      'mobileno': mobileno,
+      'username': username,
+      'role': role,
+      'password': password
+    });
     // print('pqw');
-    print(response.body);
   }
 
   void _submitAuthform(String email, String mobileno, String username,
