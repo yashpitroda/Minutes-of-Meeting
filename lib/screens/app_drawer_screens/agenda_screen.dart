@@ -2,20 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:minuteofmeeting/widgets/add_project_widgets.dart';
-import 'package:minuteofmeeting/screens/project_details_screen/project_details_screen.dart';
+import 'package:minuteofmeeting/screens/agenda_details_screen/agenda_details_screen.dart';
+import 'package:minuteofmeeting/widgets/add_agenda_widgets.dart';
 import 'package:minuteofmeeting/widgets/project_item.dart';
 
 import '../../widgets/app_drawer.dart';
 
-class ProjectScreen extends StatelessWidget {
+class AgendaScreen extends StatelessWidget {
   static const routeName = '/ProjectScreen';
-  const ProjectScreen({super.key});
+  const AgendaScreen({super.key});
   void addproject(BuildContext ctx) {
     showModalBottomSheet(
         context: ctx,
         builder: (_) {
-          return AddProjectWidget();
+          return AddAgendaWidget();
         });
   }
 
@@ -24,7 +24,7 @@ class ProjectScreen extends StatelessWidget {
     return Scaffold(
       drawer: AppDrawer(),
       appBar: AppBar(
-        title: Text("projects"),
+        title: Text("agenda"),
         actions: [
           // IconButton(
           //     onPressed: () => addproject(context), icon: Icon(Icons.add)),
@@ -69,7 +69,7 @@ class ProjectScreen extends StatelessWidget {
         ],
       ),
       body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('projects').snapshots(),
+          stream: FirebaseFirestore.instance.collection('agenda').snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -89,16 +89,16 @@ class ProjectScreen extends StatelessWidget {
                   onTap: () {
                     print(projectdata[index].id);
                     Navigator.of(context).pushNamed(
-                        ProjectDetailsScreen.routeName,
+                        AgendaDetailsScreen.routeName,
                         arguments: projectdata[index].id);
                   },
                   child: projectItem(
                       projectDiscription: projectdata[index]
-                          ['projectDiscription'],
-                      projecttilte: projectdata[index]['projectname'],
-                      projectcreateby: projectdata[index]['projectcreateby'],
+                          ['agendaDiscription'],
+                      projecttilte: projectdata[index]['agendaname'],
+                      projectcreateby: projectdata[index]['agendacreateby'],
                       projectehencreaated: projectdata[index]
-                          ['projectcreationdate']),
+                          ['agendacreationdate']),
                 );
               },
             );

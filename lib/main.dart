@@ -5,8 +5,9 @@ import 'package:minuteofmeeting/screens/app_drawer_screens/activities_screen.dar
 import 'package:minuteofmeeting/screens/app_drawer_screens/calender_screen.dart';
 import 'package:minuteofmeeting/screens/app_drawer_screens/individual_chat_screen.dart';
 import 'package:minuteofmeeting/screens/app_drawer_screens/profile_screen.dart';
-import 'package:minuteofmeeting/screens/project_details_screen/project_details_screen.dart';
-import 'package:minuteofmeeting/screens/app_drawer_screens/project_screen.dart';
+import 'package:minuteofmeeting/screens/agenda_details_screen/agenda_details_screen.dart';
+import 'package:minuteofmeeting/screens/app_drawer_screens/agenda_screen.dart';
+import 'package:minuteofmeeting/screens/project_details_screen/meeting_screen.dart';
 
 import 'firebase_options.dart';
 import 'screens/auth_screen.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         builder: (context, userSnapshot) {
           if (userSnapshot.hasData) {
             //if data is found mean userr authanticated so we go to chatscreem
-            return ProjectScreen();
+            return AgendaScreen();
           } else {
             //and no data so not auth.. so retry
             return AuthScreen();
@@ -44,12 +45,12 @@ class MyApp extends StatelessWidget {
         },
       ),
       routes: {
-        ProjectDetailsScreen.routeName: (context) => ProjectDetailsScreen(),
+        AgendaDetailsScreen.routeName: (context) => AgendaDetailsScreen(),
         ActiviesScreen.routeName: (context) => ActiviesScreen(),
         CalenderScreen.routeName: (context) => CalenderScreen(),
         ProfileScreen.routeName: (context) => ProfileScreen(),
         IndividualChatScreen.routeName: (context) => IndividualChatScreen(),
-        ProjectScreen.routeName: (context) => ProjectScreen(),
+        AgendaScreen.routeName: (context) => AgendaScreen(),
       },
     );
   }

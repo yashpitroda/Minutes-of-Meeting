@@ -1,38 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:minuteofmeeting/screens/project_details_screen/bottom_nav_pages/chat_screen.dart';
-import 'package:minuteofmeeting/screens/project_details_screen/bottom_nav_pages/meeting_screen.dart';
-import 'package:minuteofmeeting/screens/project_details_screen/bottom_nav_pages/post_screen.dart';
-import 'package:minuteofmeeting/screens/project_details_screen/bottom_nav_pages/task_screen.dart';
 
-class ProjectDetailsScreen extends StatefulWidget {
-  const ProjectDetailsScreen({super.key});
-  static const routeName = '/ProjectDetailsScreen';
+import '../project_details_screen/meeting_screen.dart';
+import 'bottom_nav_pages/Talk_Screen.dart';
+import 'bottom_nav_pages/chat_screen.dart';
+import 'bottom_nav_pages/task_screen.dart';
+
+class AgendaDetailsScreen extends StatefulWidget {
+  const AgendaDetailsScreen({super.key});
+  static const routeName = '/AgendaDetailsScreen';
 
   @override
-  State<ProjectDetailsScreen> createState() => _ProjectDetailsScreenState();
+  State<AgendaDetailsScreen> createState() => _AgendaDetailsScreenState();
 }
 
-class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
+class _AgendaDetailsScreenState extends State<AgendaDetailsScreen> {
   dynamic projectId;
   int current_index = 0;
-  var pageList = [
-    MeetingScreen(),
-    Taskscreen(),
-    ChatScreen(),
-    PostScreen(),
-  ];
+
   void _onItemTapped(int index) {
     setState(() {
       current_index = index;
     });
   }
 
+  var pageList = [];
   @override
   void didChangeDependencies() {
     var pid = ModalRoute.of(context)?.settings.arguments;
     if (pid != null) {
       projectId = pid;
     }
+    pageList.add(MeetingScreen(projectId: projectId));
+    pageList.add(Taskscreen(projectId: projectId));
+    pageList.add(ChatScreen(projectId: projectId));
+    pageList.add(TalksScreen(projectId: projectId));
     super.didChangeDependencies();
   }
 

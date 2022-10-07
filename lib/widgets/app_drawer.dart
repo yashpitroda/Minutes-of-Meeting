@@ -4,7 +4,7 @@ import 'package:minuteofmeeting/screens/app_drawer_screens/activities_screen.dar
 import 'package:minuteofmeeting/screens/app_drawer_screens/calender_screen.dart';
 import 'package:minuteofmeeting/screens/app_drawer_screens/individual_chat_screen.dart';
 import 'package:minuteofmeeting/screens/app_drawer_screens/profile_screen.dart';
-import 'package:minuteofmeeting/screens/app_drawer_screens/project_screen.dart';
+import 'package:minuteofmeeting/screens/app_drawer_screens/agenda_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -19,10 +19,10 @@ class AppDrawer extends StatelessWidget {
           Divider(),
           ListTile(
             leading: Icon(Icons.web),
-            title: Text('projects'),
+            title: Text('Agenda'),
             onTap: () {
               Navigator.of(context)
-                  .pushReplacementNamed(ProjectScreen.routeName);
+                  .pushReplacementNamed(AgendaScreen.routeName);
             },
           ),
           Divider(),

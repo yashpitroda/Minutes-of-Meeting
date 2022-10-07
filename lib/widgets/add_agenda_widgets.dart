@@ -1,3 +1,4 @@
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,16 +6,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class AddProjectWidget extends StatefulWidget {
+class AddAgendaWidget extends StatefulWidget {
   @override
-  State<AddProjectWidget> createState() => _AddProjectWidgetState();
+  State<AddAgendaWidget> createState() => _AddAgendaWidgetState();
 }
 
-class _AddProjectWidgetState extends State<AddProjectWidget> {
+class _AddAgendaWidgetState extends State<AddAgendaWidget> {
   final _formkey = GlobalKey<FormState>();
 
-  String _projectName = '';
-  String _projectDiscription = '';
+  String _agendaName = '';
+  String _agendaDiscription = '';
   // String _organizationName = '';
   String _departmentname = '';
   DateTime? _dateTimeWhenprojectCreated;
@@ -67,13 +68,14 @@ class _AddProjectWidgetState extends State<AddProjectWidget> {
           .collection('users')
           .doc(currentUser!.uid)
           .get();
-      FirebaseFirestore.instance.collection('projects').add({
-        'projectname': _projectName,
-        'projectDiscription': _projectDiscription,
+      // FirebaseFirestore.instance.collection('projects').add({
+      FirebaseFirestore.instance.collection('agenda').add({
+        'agendaname': _agendaName,
+        'agendaDiscription': _agendaDiscription,
         // 'organizationName': _organizationName,
         'departmentname': _departmentname,
-        'projectcreationdate': Timestamp.now(),
-        'projectcreateby':userdocData['username'],
+        'agendacreationdate': Timestamp.now(),
+        'agendacreateby':userdocData['username'],
         'useridWhoprojectCreated':userdocData['useridbyfirebase'],
       });
       Navigator.of(context).pop();
@@ -105,7 +107,7 @@ class _AddProjectWidgetState extends State<AddProjectWidget> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       TextFormField(
-                        key: ValueKey('projectNameKey'),
+                        key: ValueKey('agendaNameKey'),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'fill the box';
@@ -113,13 +115,13 @@ class _AddProjectWidgetState extends State<AddProjectWidget> {
                           return null;
                         },
                         keyboardType: TextInputType.text,
-                        decoration: InputDecoration(labelText: 'project name'),
+                        decoration: InputDecoration(labelText: 'Agenda name'),
                         onSaved: (newValue) {
-                          _projectName = newValue!;
+                          _agendaName = newValue!;
                         },
                       ),
                       TextFormField(
-                        key: ValueKey('projectDiscriptionKey'),
+                        key: ValueKey('agendaDiscriptionKey'),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'fill the box';
@@ -128,9 +130,9 @@ class _AddProjectWidgetState extends State<AddProjectWidget> {
                         },
                         keyboardType: TextInputType.text,
                         decoration:
-                            InputDecoration(labelText: 'project Discription'),
+                            InputDecoration(labelText: 'agenda Discription'),
                         onSaved: (newValue) {
-                          _projectDiscription = newValue!;
+                          _agendaDiscription = newValue!;
                         },
                       ),
                      
