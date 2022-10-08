@@ -1,6 +1,11 @@
+import 'dart:math';
+
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:highlight_text/highlight_text.dart';
+import 'package:minuteofmeeting/widgets/message_widget.dart';
 import 'package:minuteofmeeting/widgets/upload_icon_widget.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
@@ -14,6 +19,8 @@ class TalksScreen extends StatefulWidget {
 }
 
 class _TalksScreenState extends State<TalksScreen> {
+  String? pid;
+
   Map<String, HighlightedWord> _highlights = {
     "Flutter": HighlightedWord(
       onTap: () {
@@ -75,6 +82,7 @@ class _TalksScreenState extends State<TalksScreen> {
   @override
   void initState() {
     super.initState();
+    pid = widget.projectId;
     _speech = stt.SpeechToText();
   }
 
@@ -105,6 +113,23 @@ class _TalksScreenState extends State<TalksScreen> {
       });
       _speech!.stop();
     }
+  }
+
+  void _sendMessage() async {
+    FocusScope.of(context).unfocus(); //exit to keybord
+    final currentUser = await FirebaseAuth.instance.currentUser;
+    final userdocData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser!.uid)
+        .get();
+    FirebaseFirestore.instance.collection('agenda/$pid/chats').add({
+      'text': _text,
+      'createdAt': Timestamp.now(),
+      'userId': currentUser.uid,
+      'userName': userdocData['username'],
+      'userImageUrl':
+          'https://firebasestorage.googleapis.com/v0/b/flutter-chat-app-270aa.appspot.com/o/user_image%2FabzLSPNNNLgrvsi98XJAs3IQOBF3.jpg?alt=media&token=bfb0cd60-c8f0-41c2-92fb-f36cbc1e8583',
+    });
   }
 
   @override
@@ -157,16 +182,7 @@ class _TalksScreenState extends State<TalksScreen> {
               elevation: 2,
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.34,
-                child: ListView(
-                  children: [
-                    Text("data"),
-                    Text("data"),
-                    Text("data"),
-                    Text("data"),
-                    Text("data"),
-                    Text("data"),
-                  ],
-                ),
+                child: MassagesWidget(projectId: pid),
               ),
             ),
             Card(
@@ -204,7 +220,7 @@ class _TalksScreenState extends State<TalksScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(onTap: () {}, child: UploadIconWidget()),
+                  InkWell(onTap: _sendMessage, child: UploadIconWidget()),
                   InkWell(onTap: () {}, child: RemoveIconWidget()),
                 ],
               ),
