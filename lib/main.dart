@@ -7,7 +7,6 @@ import 'package:minuteofmeeting/screens/app_drawer_screens/individual_chat_scree
 import 'package:minuteofmeeting/screens/app_drawer_screens/profile_screen.dart';
 import 'package:minuteofmeeting/screens/agenda_details_screen/agenda_details_screen.dart';
 import 'package:minuteofmeeting/screens/app_drawer_screens/agenda_screen.dart';
-import 'package:minuteofmeeting/screens/project_details_screen/meeting_screen.dart';
 
 import 'firebase_options.dart';
 import 'screens/auth_screen.dart';

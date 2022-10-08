@@ -85,7 +85,7 @@ class messageBubbleContainer extends StatelessWidget {
           bottomRight: isMe ? Radius.circular(0) : Radius.circular(12),
         ),
       ),
-      width: 140,
+      width: 250,
       // padding: EdgeInsets.symmetric( //innner content(text) space
       //   vertical: 10,
       //   horizontal: 16,
@@ -101,14 +101,16 @@ class messageBubbleContainer extends StatelessWidget {
               isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
             Text(
-              username,
+              isMe ? 'Organiser : $username' : 'participants : $username',
               style: TextStyle(
                 fontWeight: FontWeight.w700,
                 color: isMe ? Colors.white : Colors.black,
               ),
             ),
             Text(
+              
               message,
+              
               style: TextStyle(
                 color: isMe ? Colors.white70 : Colors.black87,
               ),

@@ -128,7 +128,7 @@ class _TalksScreenState extends State<TalksScreen> {
       'userId': currentUser.uid,
       'userName': userdocData['username'],
       'userImageUrl':
-          'https://firebasestorage.googleapis.com/v0/b/flutter-chat-app-270aa.appspot.com/o/user_image%2FabzLSPNNNLgrvsi98XJAs3IQOBF3.jpg?alt=media&token=bfb0cd60-c8f0-41c2-92fb-f36cbc1e8583',
+          'https://firebasestorage.googleapis.com/v0/b/minute-of-meeting-fdabc.appspot.com/o/download.jpeg?alt=media&token=9b56540f-29ad-4fcd-b546-66235c91ed5c',
     });
   }
 
@@ -221,7 +221,13 @@ class _TalksScreenState extends State<TalksScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(onTap: _sendMessage, child: UploadIconWidget()),
-                  InkWell(onTap: () {}, child: RemoveIconWidget()),
+                  InkWell(
+                      onTap: () {
+                        setState(() {
+                          _text = '';
+                        });
+                      },
+                      child: RemoveIconWidget()),
                 ],
               ),
             ),

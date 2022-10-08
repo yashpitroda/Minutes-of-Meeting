@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:minuteofmeeting/screens/agenda_details_screen/bottom_nav_pages/meeting_screen.dart';
 
-import '../project_details_screen/meeting_screen.dart';
 import 'bottom_nav_pages/Talk_Screen.dart';
 import 'bottom_nav_pages/chat_screen.dart';
 import 'bottom_nav_pages/task_screen.dart';
@@ -30,10 +30,10 @@ class _AgendaDetailsScreenState extends State<AgendaDetailsScreen> {
     if (pid != null) {
       projectId = pid;
     }
+    pageList.add(TalksScreen(projectId: projectId));
     pageList.add(MeetingScreen(projectId: projectId));
     pageList.add(Taskscreen(projectId: projectId));
     pageList.add(ChatScreen(projectId: projectId));
-    pageList.add(TalksScreen(projectId: projectId));
     super.didChangeDependencies();
   }
 
@@ -48,6 +48,10 @@ class _AgendaDetailsScreenState extends State<AgendaDetailsScreen> {
         onTap: _onItemTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
+            icon: Icon(Icons.record_voice_over_rounded),
+            label: 'talks',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.meeting_room_outlined),
             label: 'meeting',
           ),
@@ -58,10 +62,6 @@ class _AgendaDetailsScreenState extends State<AgendaDetailsScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.chat_rounded),
             label: 'chat',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.post_add_rounded),
-            label: 'post',
           ),
         ],
       ),

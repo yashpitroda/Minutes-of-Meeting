@@ -78,7 +78,7 @@ class AgendaScreen extends StatelessWidget {
             }
             var projectdata = snapshot.data?.docs;
             if ((projectdata!.isEmpty)) {
-              return Center(
+              return  Center(
                 child: Text("sorry project list is empty.."),
               );
             }
