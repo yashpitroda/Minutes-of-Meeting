@@ -76,14 +76,16 @@ class AgendaScreen extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             }
-            var projectdata = snapshot.data?.docs;
-            if ((projectdata!.isEmpty)) {
-              return  Center(
+            final projectdata = snapshot.data?.docs;
+            // if ((projectdata! .isEmpty)) {
+            print(projectdata);
+            if ((projectdata == null)) {
+              return Center(
                 child: Text("sorry project list is empty.."),
               );
             }
             return ListView.builder(
-              itemCount: projectdata!.length,
+              itemCount: projectdata.length,
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {

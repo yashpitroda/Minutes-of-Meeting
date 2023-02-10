@@ -3,10 +3,14 @@ import 'dart:math';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:highlight_text/highlight_text.dart';
+import 'package:minuteofmeeting/models/summary_proivder.dart';
 import 'package:minuteofmeeting/widgets/message_widget.dart';
 import 'package:minuteofmeeting/widgets/upload_icon_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 import '../../../widgets/remove_icon_widget.dart';
@@ -122,7 +126,7 @@ class _TalksScreenState extends State<TalksScreen> {
         .collection('users')
         .doc(currentUser!.uid)
         .get();
-    FirebaseFirestore.instance.collection('agenda/$pid/chats').add({
+    await FirebaseFirestore.instance.collection('agenda/$pid/chats').add({
       'text': _text,
       'createdAt': Timestamp.now(),
       'userId': currentUser.uid,
@@ -130,7 +134,40 @@ class _TalksScreenState extends State<TalksScreen> {
       'userImageUrl':
           'https://firebasestorage.googleapis.com/v0/b/minute-of-meeting-fdabc.appspot.com/o/download.jpeg?alt=media&token=9b56540f-29ad-4fcd-b546-66235c91ed5c',
     });
+    _ontap();
   }
+
+  void _ontap() async {
+    String data__ = "";
+    var a = "";
+    print("object");
+    await FirebaseFirestore.instance
+        .collection('agenda/$pid/chats')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        a = a + doc["text"];
+        data__ = a;
+      });
+    });
+    await Provider.of<summaryProvider>(context, listen: false).detectSummary(
+      data: data__,
+    );
+  }
+
+  // void _ontap2() async {
+  //   final Email email = Email(
+  //     body: 'Email body',
+  //     subject: 'Email subject',
+  //     recipients: ['tirthshah100@gmail.com'],
+  //     // cc: ['cc@example.com'],
+  //     // bcc: ['bcc@example.com'],
+  //     attachmentPaths: ['/path/to/attachment.zip'],
+  //     isHTML: false,
+  //   );
+
+  //   await FlutterEmailSender.send(email);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -178,6 +215,16 @@ class _TalksScreenState extends State<TalksScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            ElevatedButton(
+                onPressed: () async {
+                  _ontap();
+                },
+                child: Text("btn")),
+            ElevatedButton(
+                onPressed: () async {
+                  // _ontap2();
+                },
+                child: Text("btnnnn222")),
             Card(
               elevation: 2,
               child: Container(
