@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 // import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:minuteofmeeting/models/summary_proivder.dart';
@@ -168,6 +169,38 @@ class _TalksScreenState extends State<TalksScreen> {
 
   //   await FlutterEmailSender.send(email);
   // }
+  Future<void> send() async {
+    final Email email = Email(
+      body: 'Email body',
+      subject: 'Email subject',
+      recipients: ['tirthshah100@gmail.com'],
+      // cc: ['cc@example.com'],
+      // bcc: ['bcc@example.com'],
+      // cc: [''],
+      // bcc: [''],
+      // attachmentPaths: ['/path/to/attachment.zip'],
+      // attachmentPaths: [''],
+      isHTML: false,
+    );
+
+    String platformResponse;
+
+    try {
+      await FlutterEmailSender.send(email);
+      platformResponse = 'success';
+    } catch (error) {
+      print(error);
+      platformResponse = error.toString();
+    }
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(platformResponse),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +255,7 @@ class _TalksScreenState extends State<TalksScreen> {
                 child: Text("btn")),
             ElevatedButton(
                 onPressed: () async {
-                  // _ontap2();
+                  await send();
                 },
                 child: Text("btnnnn222")),
             Card(
