@@ -14,8 +14,21 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     String ans = Provider.of<summaryProvider>(context).getans;
     return Scaffold(
-      body: Column(
-        children: [Text(ans)],
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: ListView(
+          children: [
+            Text(
+              ans,
+              textAlign: TextAlign.justify,
+              style: TextStyle(fontSize: 18),
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.download),
       ),
     );
   }

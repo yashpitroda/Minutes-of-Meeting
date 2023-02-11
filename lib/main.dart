@@ -3,13 +3,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:minuteofmeeting/models/summary_proivder.dart';
-import 'package:minuteofmeeting/screens/agenda_details_screen/select_supplier_screen.dart';
+import 'package:minuteofmeeting/screens/select_supplier_screen.dart';
 import 'package:minuteofmeeting/screens/app_drawer_screens/activities_screen.dart';
 import 'package:minuteofmeeting/screens/app_drawer_screens/calender_screen.dart';
 import 'package:minuteofmeeting/screens/app_drawer_screens/individual_chat_screen.dart';
 import 'package:minuteofmeeting/screens/app_drawer_screens/profile_screen.dart';
 import 'package:minuteofmeeting/screens/agenda_details_screen/agenda_details_screen.dart';
 import 'package:minuteofmeeting/screens/app_drawer_screens/agenda_screen.dart';
+import 'package:minuteofmeeting/screens/splash_screen.dart';
 import 'package:minuteofmeeting/widgets/add_agenda_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
           builder: (context, userSnapshot) {
             if (userSnapshot.hasData) {
               //if data is found mean userr authanticated so we go to chatscreem
-              return AgendaScreen();
+              return Splashscreen();
             } else {
               //and no data so not auth.. so retry
               return AuthScreen();

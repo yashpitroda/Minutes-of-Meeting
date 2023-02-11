@@ -26,6 +26,8 @@ class TalksScreen extends StatefulWidget {
 
 class _TalksScreenState extends State<TalksScreen> {
   String? pid;
+  TextEditingController textcon = TextEditingController();
+  FocusNode textfuc = FocusNode();
 
   Map<String, HighlightedWord> _highlights = {
     "Flutter": HighlightedWord(
@@ -89,6 +91,7 @@ class _TalksScreenState extends State<TalksScreen> {
   void initState() {
     super.initState();
     pid = widget.projectId;
+    _ontap();
     _speech = stt.SpeechToText();
   }
 
@@ -107,6 +110,7 @@ class _TalksScreenState extends State<TalksScreen> {
         _speech!.listen(
           onResult: (val) => setState(() {
             _text = val.recognizedWords;
+            textcon.text = _text;
             if (val.hasConfidenceRating && val.confidence > 0) {
               _confiance = val.confidence;
             }
@@ -121,11 +125,13 @@ class _TalksScreenState extends State<TalksScreen> {
     }
   }
 
-  void _sendMessage() async {
+  Future<void> _sendMessage() async {
     FocusScope.of(context).unfocus(); //exit to keybord
     ans = Utill.removeSlangWords(
         // inputtext: "ANND BHODU BABUCHAK NICH HUMAN");
         inputtext: _text);
+    //orgnizer meeting tomoro at 3pm regarding taluka
+    //"Organize a meeting tomorrow regarding welfare issues from taluka level administration, This task is assigned to Mr Shah."
     final currentUser = await FirebaseAuth.instance.currentUser;
     final userdocData = await FirebaseFirestore.instance
         .collection('users')
@@ -140,6 +146,32 @@ class _TalksScreenState extends State<TalksScreen> {
           'https://firebasestorage.googleapis.com/v0/b/minute-of-meeting-fdabc.appspot.com/o/download.jpeg?alt=media&token=9b56540f-29ad-4fcd-b546-66235c91ed5c',
     });
     _ontap();
+  }
+
+  Future<void> tappp(String inputstr) async {
+    //"Organize a meeting tomorrow regarding welfare issues from taluka level administration, This task is assigned to Mr Shah."
+    // String a =
+    //     "welfare issues from taluka level administration This task is assigned to Elon musk";
+    String a = inputstr;
+
+    String title = a.split('This task')[0].toLowerCase();
+    String personname = a.split(' task is assigned to')[1].toLowerCase();
+    print(title);
+    print(personname);
+    final currentUser = await FirebaseAuth.instance.currentUser;
+    final userdocData = await FirebaseFirestore.instance
+        .collection('users/')
+        .doc(currentUser!.uid)
+        .get();
+    await FirebaseFirestore.instance.collection('task/').add({
+      'task_title': title,
+      'asign_to': personname,
+      'createdAt': Timestamp.now(),
+      'userId': currentUser.uid,
+      'userName': userdocData['username'],
+      'userImageUrl':
+          'https://firebasestorage.googleapis.com/v0/b/minute-of-meeting-fdabc.appspot.com/o/download.jpeg?alt=media&token=9b56540f-29ad-4fcd-b546-66235c91ed5c',
+    });
   }
 
   void _ontap() async {
@@ -261,42 +293,78 @@ class _TalksScreenState extends State<TalksScreen> {
             //  Text("btn")),
             // ElevatedButton(
             //     onPressed: () async {
-            //       await send();
+            //       await tappp();
             //       setState(() {});
             //     },
             //     child: Text("btnnnn222")),
             // Text(ans),
-            Card(
-              elevation: 2,
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.34,
-                child: MassagesWidget(projectId: pid),
+            Expanded(
+              flex: 3,
+              child: Card(
+                elevation: 2,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.34,
+                  child: MassagesWidget(projectId: pid),
+                ),
               ),
             ),
-            Card(
-              elevation: 2,
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.33,
-                child: ListView(
+            Expanded(
+                flex: 2,
+                child: Row(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            child: TextHighlight(
-                          text: _text,
-                          words: _highlights,
-                          textAlign: TextAlign.justify,
-                          textStyle: TextStyle(
-                              fontSize: 30.0,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400),
-                        )),
-                      ],
+                    Expanded(
+                      flex: 5,
+                      child: TextField(
+                        focusNode: textfuc,
+                        controller: textcon,
+                        onChanged: (value) {
+                          textcon.text = value;
+
+                          setState(() {});
+                        },
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                      ),
                     ),
+                    Expanded(
+                        flex: 2,
+                        child: IconButton(
+                          onPressed: () async {
+                            _text = textcon.text;
+                            await _sendMessage();
+                            await tappp(textcon.text);
+                          },
+                          icon: Icon(Icons.check),
+                        ))
                   ],
+                )),
+            Expanded(
+              flex: 4,
+              child: Card(
+                elevation: 2,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 0.33,
+                  child: ListView(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              child: TextHighlight(
+                            text: _text,
+                            words: _highlights,
+                            textAlign: TextAlign.justify,
+                            textStyle: TextStyle(
+                                fontSize: 30.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400),
+                          )),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -308,7 +376,14 @@ class _TalksScreenState extends State<TalksScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(onTap: _sendMessage, child: UploadIconWidget()),
+                  InkWell(
+                      onTap: () async {
+                        await _sendMessage();
+                        await tappp(_text);
+
+                        _ontap();
+                      },
+                      child: UploadIconWidget()),
                   InkWell(
                       onTap: () {
                         setState(() {

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 
-import '../screens/agenda_details_screen/select_supplier_screen.dart';
+import '../screens/select_supplier_screen.dart';
 
 class AddAgendaWidget extends StatefulWidget {
   static const routeName = '/AddAgendaWidget';
@@ -137,18 +137,35 @@ class _AddAgendaWidgetState extends State<AddAgendaWidget> {
           .doc(currentUser!.uid)
           .get();
       // FirebaseFirestore.instance.collection('projects').add({
-      await FirebaseFirestore.instance.collection('agenda').add({
-        'agendaname': _agendaName,
-        'agendaDiscription': _agendaDiscription,
-        // 'organizationName': _organizationName,
-        "memberlist": selectedmember,
-        'venue': _vanueName,
-        'agendacreationdate': Timestamp.now(),
-        'agendacreateby': userdocData['username'],
-        'useridWhoprojectCreated': userdocData['useridbyfirebase'],
-      });
+      if (_isgeneral == true) {
+        await FirebaseFirestore.instance.collection('agenda').add({
+          "_isgenral": _isgeneral,
+          'agendaname': _agendaName,
+          'agendaDiscription': _agendaDiscription,
+          // 'organizationName': _organizationName,
+          "memberlist": selectedmember,
+          'venue': _vanueName,
+          'agendacreationdate': Timestamp.now(),
+          'agendacreateby': userdocData['username'],
+          'useridWhoprojectCreated': userdocData['useridbyfirebase'],
+        });
+      } else {
+        await FirebaseFirestore.instance.collection('department').add({
+          "_isgenral": _isgeneral,
+          'agendaname': _agendaName,
+          'agendaDiscription': _agendaDiscription,
+          // 'organizationName': _organizationName,
+          "memberlist": selectedmember,
+          'venue': _vanueName,
+          'agendacreationdate': Timestamp.now(),
+          'agendacreateby': userdocData['username'],
+          'useridWhoprojectCreated': userdocData['useridbyfirebase'],
+        });
+      }
+
       final Email email = Email(
-        body: 'meeting: ${_agendaName}\nvanue:${_vanueName}',
+        body:
+            'Hello Yash,This email is to inform you about the meeting that is going to take place on 6th February, 2023 at 4:00 pm to discuss about ABC. The meeting will take place at conference room no. 305. An agenda for the meeting is attached. The most important topics for discussion include:•	XYZ•	DEF•	TYUPlease click this link to  enter the online meet. Thank you for your coordination.Regards,Tirth Shah,Organizer,9199323282Dept. Of Welfare',
         subject: 'meeting invitation',
         recipients: selectedmemberEmailList,
         // cc: ['cc@example.com'],
@@ -227,7 +244,13 @@ class _AddAgendaWidgetState extends State<AddAgendaWidget> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         DateTimeSelector(),
-                        billWithOrWithoutOption(),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Center(child: billWithOrWithoutOption()),
+                        SizedBox(
+                          height: 6,
+                        ),
                         TextField(
                           readOnly: true,
                           onTap: () {
@@ -248,7 +271,7 @@ class _AddAgendaWidgetState extends State<AddAgendaWidget> {
                                   BorderRadius.all(Radius.circular(4)),
                             ),
                             // labelText: "client",
-                            labelText: "Firm Name",
+                            labelText: "Select member",
                             labelStyle:
                                 TextStyle(letterSpacing: 1, fontSize: 14),
                             hintStyle: TextStyle(fontSize: 13),
@@ -440,6 +463,7 @@ class _AddAgendaWidgetState extends State<AddAgendaWidget> {
 
   Row billWithOrWithoutOption() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         ChoiceChip(
           backgroundColor: const Color.fromARGB(255, 192, 200, 216),

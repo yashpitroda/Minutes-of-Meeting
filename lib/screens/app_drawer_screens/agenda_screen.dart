@@ -136,7 +136,53 @@ class AgendaScreen extends StatelessWidget {
                     },
                   );
                 }),
-            Icon(Icons.directions_transit),
+            // Icon(Icons.directions_transit),
+            StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('department')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  final projectdata = snapshot.data?.docs;
+                  // final newpdata=projectdata!.where((element) {
+                  //   return ((element.id==currentUser!.refreshToken) );
+                  // });
+                  // final a=projectdata.where((element) {
+
+                  // });
+                  // if ((projectdata! .isEmpty)) {
+                  print(projectdata);
+                  if ((projectdata == null)) {
+                    return Center(
+                      child: Text("sorry project list is empty.."),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: projectdata.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          print(projectdata[index].id);
+                          Navigator.of(context).pushNamed(
+                              AgendaDetailsScreen.routeName,
+                              arguments: projectdata[index].id);
+                        },
+                        child: projectItem(
+                            projectDiscription: projectdata[index]
+                                ['agendaDiscription'],
+                            projecttilte: projectdata[index]['agendaname'],
+                            projectcreateby: projectdata[index]
+                                ['agendacreateby'],
+                            projectehencreaated: projectdata[index]
+                                ['agendacreationdate']),
+                      );
+                    },
+                  );
+                }),
           ],
         ),
         floatingActionButton: FloatingActionButton(

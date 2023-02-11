@@ -81,7 +81,7 @@ class _SelectSupplierScreenState extends State<SelectSupplierScreen> {
       appBar: AppBar(
         elevation: 0,
         title: const Text(
-          "Select mamber",
+          "Select member",
           // style: TextStyle(fontFamily: "Rubik"),
         ),
         actions: [

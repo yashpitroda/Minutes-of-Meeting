@@ -29,6 +29,7 @@ class summaryProvider with ChangeNotifier {
     }
 
     final responseData = json.decode(response.body);
+    print(response.body);
     String result = responseData['result']; //[{},{},{}]
     ans = result;
     print(ans);
