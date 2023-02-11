@@ -36,12 +36,34 @@ class MassagesWidget extends StatelessWidget {
         return ListView.builder(
           reverse: true, //botton to top
           itemCount: chatdocument.length,
-          itemBuilder: (ctx, index) => MessageBubble(
-            chatdocument[index]['text'],
-            chatdocument[index]['userName'],
-            chatdocument[index]['userImageUrl'],
-            (chatdocument[index]['userId'] == currentUser!.uid),
-            key: ValueKey(chatdocument[index].id),
+          itemBuilder: (ctx, index) => GestureDetector(
+            onLongPress: () {
+              showModalBottomSheet<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                        child: ListTile(
+                            leading: Icon(Icons.delete),
+                            title: Text('Delete'),
+                            onTap: () async {
+                              print(chatdocument[index].id);
+                              String chatid = chatdocument[index].id;
+                              // await FirebaseFirestore.instance
+                              //     .collection('agenda/$projectId/chats').
+                                  
+                            }
+                            // Remove the tapped document here - how?
+
+                            ));
+                  });
+            },
+            child: MessageBubble(
+              chatdocument[index]['text'],
+              chatdocument[index]['userName'],
+              chatdocument[index]['userImageUrl'],
+              (chatdocument[index]['userId'] == currentUser!.uid),
+              key: ValueKey(chatdocument[index].id),
+            ),
           ),
         );
       },

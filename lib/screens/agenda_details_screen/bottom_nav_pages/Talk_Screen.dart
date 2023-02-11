@@ -9,6 +9,7 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 // import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:minuteofmeeting/models/summary_proivder.dart';
+import 'package:minuteofmeeting/utilly.dart';
 import 'package:minuteofmeeting/widgets/message_widget.dart';
 import 'package:minuteofmeeting/widgets/upload_icon_widget.dart';
 import 'package:provider/provider.dart';
@@ -122,13 +123,16 @@ class _TalksScreenState extends State<TalksScreen> {
 
   void _sendMessage() async {
     FocusScope.of(context).unfocus(); //exit to keybord
+    ans = Utill.removeSlangWords(
+        // inputtext: "ANND BHODU BABUCHAK NICH HUMAN");
+        inputtext: _text);
     final currentUser = await FirebaseAuth.instance.currentUser;
     final userdocData = await FirebaseFirestore.instance
         .collection('users')
         .doc(currentUser!.uid)
         .get();
     await FirebaseFirestore.instance.collection('agenda/$pid/chats').add({
-      'text': _text,
+      'text': ans,
       'createdAt': Timestamp.now(),
       'userId': currentUser.uid,
       'userName': userdocData['username'],
@@ -169,37 +173,38 @@ class _TalksScreenState extends State<TalksScreen> {
 
   //   await FlutterEmailSender.send(email);
   // }
+  String ans = "";
   Future<void> send() async {
-    final Email email = Email(
-      body: 'Email body',
-      subject: 'Email subject',
-      recipients: ['tirthshah100@gmail.com'],
-      // cc: ['cc@example.com'],
-      // bcc: ['bcc@example.com'],
-      // cc: [''],
-      // bcc: [''],
-      // attachmentPaths: ['/path/to/attachment.zip'],
-      // attachmentPaths: [''],
-      isHTML: false,
-    );
+    // final Email email = Email(
+    //   body: 'Email body',
+    //   subject: 'Email subject',
+    //   recipients: ['tirthshah100@gmail. com'],
+    //   // cc: ['cc@example.com'],
+    //   // bcc: ['bcc@example.com'],
+    //   // cc: [''],
+    //   // bcc: [''],
+    //   // attachmentPaths: ['/path/to/attachment.zip'],
+    //   // attachmentPaths: [''],
+    //   isHTML: false,
+    // );
 
-    String platformResponse;
+    // String platformResponse;
 
-    try {
-      await FlutterEmailSender.send(email);
-      platformResponse = 'success';
-    } catch (error) {
-      print(error);
-      platformResponse = error.toString();
-    }
+    // try {
+    //   await FlutterEmailSender.send(email);
+    //   platformResponse = 'success';
+    // } catch (error) {
+    //   print(error);
+    //   platformResponse = error.toString();
+    // }
 
-    if (!mounted) return;
+    // if (!mounted) return;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(platformResponse),
-      ),
-    );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     content: Text(platformResponse),
+    //   ),
+    // );
   }
 
   @override
@@ -248,16 +253,19 @@ class _TalksScreenState extends State<TalksScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton(
-                onPressed: () async {
-                  _ontap();
-                },
-                child: Text("btn")),
-            ElevatedButton(
-                onPressed: () async {
-                  await send();
-                },
-                child: Text("btnnnn222")),
+            // ElevatedButton(
+            //     onPressed: () async {
+            //       _ontap();
+            //     },
+            // // child:
+            //  Text("btn")),
+            // ElevatedButton(
+            //     onPressed: () async {
+            //       await send();
+            //       setState(() {});
+            //     },
+            //     child: Text("btnnnn222")),
+            // Text(ans),
             Card(
               elevation: 2,
               child: Container(
