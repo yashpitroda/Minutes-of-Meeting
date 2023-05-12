@@ -13,24 +13,41 @@ class summaryProvider with ChangeNotifier {
   }
 
   Future<void> detectSummary({required String data}) async {
+    String pre = "generate a summary on, ";
+    String finalData = pre + data;
+    String accessToken = "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";
     // print(data);
-    final url = Uri.parse("http://192.168.145.216:9000/getsummary");
+    // final url = Uri.parse("http://192.168.145.216:9000/getsummary");//https://api.openai.com/v1/chat/completions
+    final url = Uri.parse(
+        "https://api.openai.com/v1/chat/completions"); //https://api.openai.com/v1/chat/completions
+
     final response = await http.post(
       url,
-      headers: {"Content-Type": "application/json"},
+      headers: {
+        "Authorization": "Bearer " + accessToken,
+        "Content-Type": "application/json"
+      },
       body: json.encode(
         {
-          'data': data,
+          "model": "gpt-3.5-turbo",
+          "messages": [
+            {"role": "user", "content": finalData.toString()}
+          ],
         },
       ),
     );
     if (response.body == 'null') {
       return;
     }
+    print(response.body);
+
+    // print();
 
     final responseData = json.decode(response.body);
-    print(response.body);
-    String result = responseData['result']; //[{},{},{}]
+    // print(response.body);
+    String result =
+        responseData['choices'][0]["message"]["content"]; //[{},{},{}]
+    print(result);
     ans = result;
     print(ans);
 
