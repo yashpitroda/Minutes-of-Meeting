@@ -15,7 +15,7 @@ class summaryProvider with ChangeNotifier {
   Future<void> detectSummary({required String data}) async {
     String pre = "generate a summary on, ";
     String finalData = pre + data;
-    String accessToken = "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";
+    
     // print(data);
     // final url = Uri.parse("http://192.168.145.216:9000/getsummary");//https://api.openai.com/v1/chat/completions
     final url = Uri.parse(
@@ -24,7 +24,7 @@ class summaryProvider with ChangeNotifier {
     final response = await http.post(
       url,
       headers: {
-        "Authorization": "Bearer " + accessToken,
+        "Authorization": "Bearer " + urlGetter.accessToken,
         "Content-Type": "application/json"
       },
       body: json.encode(
