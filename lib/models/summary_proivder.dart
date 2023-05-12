@@ -3,7 +3,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:minuteofmeeting/models/url.dart';
+import 'package:minuteofmeeting/models/url/url.dart';
 
 class summaryProvider with ChangeNotifier {
   String ans = "";
